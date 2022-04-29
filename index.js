@@ -14,7 +14,15 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 async function run() {
     try {
-        console.log('db connected from mongo')
+        await client.connect()
+        const itemsCollections = client.db('toyWarehouse').collection('items')
+
+        app.get('/inventoryItems', async (req, res) => {
+            const query = {}
+            const cursor = itemsCollections.find(query)
+            const items = await cursor.toArray()
+            res.send(items)
+        })
     }
     finally {
 

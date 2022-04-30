@@ -71,6 +71,14 @@ async function run() {
             res.send(result)
         })
 
+        // post method to add item image
+        app.post('/inventoryItems', async (req, res) => {
+            const item = req.body
+            console.log("adding new item", item)
+            const result = await itemsCollections.insertOne(item)
+            res.send(result)
+        })
+
     }
     finally {
 

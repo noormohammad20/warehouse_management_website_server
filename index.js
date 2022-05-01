@@ -16,6 +16,7 @@ async function run() {
     try {
         await client.connect()
         const itemsCollections = client.db('toyWarehouse').collection('items')
+        const myItemsCollections = client.db('toyWarehouse').collection('myItems')
         //get method for get all items
         app.get('/inventoryItems', async (req, res) => {
             const query = {}
@@ -77,6 +78,16 @@ async function run() {
             console.log("adding new item", item)
             const result = await itemsCollections.insertOne(item)
             res.send(result)
+        })
+
+        // get method to  manage my Items
+        app.get('/myItems', async (req, res) => {
+            const email = req.query.email
+            console.log(email)
+            const query = { email: email }
+            const cursor = itemsCollections.find(query)
+            const items = await cursor.toArray()
+            res.send(items)
         })
 
     }

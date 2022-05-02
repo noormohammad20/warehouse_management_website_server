@@ -79,7 +79,7 @@ async function run() {
             const { upQuantity, quantity } = req.body
             console.log(req.body)
             const filter = { _id: ObjectId(id) }
-            const options = { upsert: true }
+            const options = { new: true }
             const updateDoc = {
                 $set: {
                     quantity: upQuantity + quantity
@@ -87,6 +87,7 @@ async function run() {
             }
             const result = await itemsCollections.updateOne(filter, updateDoc, options)
             res.send(result)
+            console.log(result)
         })
 
         //delete method for delete item in manage inventory

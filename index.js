@@ -73,17 +73,16 @@ async function run() {
             const result = await itemsCollections.updateOne(filter, updateDoc, options)
             res.send(result)
         })
-        //put method for increase quantity (not working)
-        app.put('/inventoryItems/:id', async (req, res) => {
+        //put method for increase quantity 
+        app.put('/inventoryItems/update/:id', async (req, res) => {
             const id = req.params.id
+            const { upQuantity, quantity } = req.body
             console.log(req.body)
-            const { renewQuantity } = req.body
-            console.log(renewQuantity)
             const filter = { _id: ObjectId(id) }
             const options = { upsert: true }
             const updateDoc = {
                 $set: {
-                    quantity: renewQuantity
+                    quantity: upQuantity + quantity
                 }
             }
             const result = await itemsCollections.updateOne(filter, updateDoc, options)
